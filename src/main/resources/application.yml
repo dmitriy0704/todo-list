@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: todo-test
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todos    # jdbc:h2:mem:testtask
+    username: postgres    # sa
+    password: dv9899     # password
+    driver-class-name: org.postgresql.Driver      # org.h2.Driver
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform=: org.hibernate.dialect.PostgreSQLDialect  # org.hibernate.dialect.H2Dialect
+    database: POSTGRESQL
+    show-sql: true
+  sql:
+    init:
+      platform: postgres
+# swagger-ui custom path
+#springdoc:
+#    swagger-ui:
+#      path: /swagger-ui/index.html
