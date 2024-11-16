@@ -1,9 +1,11 @@
 package todolist.controller;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import todolist.entity.Todo;
 import todolist.repository.TodoRepository;
 
@@ -42,12 +44,39 @@ public class TodoController {
         return todoRepository.save(todo);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path = "/{id}", consumes = "application/json")
     public Todo updateTodo(
             @PathVariable("id") Long id,
             @RequestBody Todo todo
-    ){
+    ) {
         todo.setId(id);
         return todoRepository.save(todo);
     }
+
+    @PatchMapping(path = "/{id}", consumes = "application/json")
+    public Todo pathTodo(
+            @PathVariable("id") Long id,
+            @RequestBody Todo patch
+    ) {
+        Todo todo = todoRepository.findById(id).get();
+        if (todo.getTitle() != null) {
+            todo.setTitle(patch.getTitle());
+        }
+
+        if (todo.getDescription() != null) {
+            todo.setDescription(patch.getDescription());
+        }
+        return todoRepository.save(todo);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTodo(@PathVariable("id") Long id) {
+        try {
+            todoRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
