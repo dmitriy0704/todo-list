@@ -21,6 +21,8 @@ public class UserService implements UserDetailsService {
     public final UsersRepository usersRepository;
     public final RoleRepository roleRepository;
 
+    private final String username;
+
     public Optional<User> findByUsername(String username) {
         return usersRepository.findByUsername(username);
     }
