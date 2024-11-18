@@ -14,7 +14,7 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
     private Long id;
-
+    
     private String title;
     private String description;
     private String user_email;
@@ -22,4 +22,5 @@ public class Todo {
     private String priority;
     private String author;
     private String executor;
+    private String comments;
 }
