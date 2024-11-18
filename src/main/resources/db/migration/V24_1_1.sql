@@ -26,8 +26,8 @@ values
 
 insert into users (username, password, email)
 values
-    ('user', '$2y$10$W.7P3ZefK9NndR1tkjsvyOpOKwmsUZnKKEcuCSxP5PqYU8YpuMoOS', 'user@gmail.com'),
-    ('admin', '$2y$10$W.7P3ZefK9NndR1tkjsvyOpOKwmsUZnKKEcuCSxP5PqYU8YpuMoOS', 'admin@gmail.com');
+    ('user', '$2a$10$tSGpDUPfQoizhiyyp5TPB.KkvOzS6Sc90JlVe9d815cjRymJPpiA2', 'user@gmail.com'),
+    ('admin', '$2a$10$tSGpDUPfQoizhiyyp5TPB.KkvOzS6Sc90JlVe9d815cjRymJPpiA2', 'admin@gmail.com');
 
 insert into users_roles (user_id, role_id)
 values
