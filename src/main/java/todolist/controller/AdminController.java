@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import todolist.entity.Todo;
+import todolist.exceptions.Answer;
 import todolist.exceptions.AppError;
 import todolist.repository.TodoRepository;
 import todolist.services.AdminService;
@@ -65,34 +66,16 @@ public class AdminController {
         return todoRepository.save(todo);
     }
 
-    // Обновление Заголовка
-    @PatchMapping(path = "/update/{id}", consumes = "application/json")
-    public Todo pathTodo(
-            @PathVariable("id") Long id,
-            @RequestBody Todo patch
-    ) {
-        Todo todo = todoRepository.findById(id).get();
-        if (todo.getTitle() != null) {
-            todo.setTitle(patch.getTitle());
-        }
-
-        return todoRepository.save(todo);
+    // Обновление Исполнителя
+    @PatchMapping(path = "/update-executor/{id}", consumes = "application/json")
+    public @ResponseBody Answer pathTodo(@PathVariable("id") Long id, @RequestBody Todo patch) {
+        Answer answer;  // Todo todo = adminService.updateExecutor(id,patch);
+        answer = adminService.updateExecutorAnswer(id, patch);
+        return answer;
     }
-
-//    @DeleteMapping("/delete/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void deleteTodo(@PathVariable("id") Long id) {
-//        try {
-//            todoRepository.deleteById(id);
-//         } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//        }
-//    }
-
 
     @RequestMapping(value = "/delete/{id}", consumes = "application/json", method = RequestMethod.DELETE)
     public @ResponseBody String deleteTodo(@PathVariable("id") Long id) {
-
         if (todoRepository.existsById(id)){
             todoRepository.deleteById(id);
             return "Задача удалена";

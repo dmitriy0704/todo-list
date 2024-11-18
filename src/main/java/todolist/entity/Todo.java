@@ -18,4 +18,8 @@ public class Todo {
     private String title;
     private String description;
     private String user_email;
+    private String status;
+    private String priority;
+    private String author;
+    private String executor;
 }
