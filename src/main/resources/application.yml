@@ -7,17 +7,17 @@ spring:
   application:
     name: todo-test
   datasource:
-    url: jdbc:postgresql://localhost:5432/todos    # jdbc:h2:mem:testtask  jdbc:h2:file:./users;MODE=PostgreSQL
-    username: postgres    # sa
-    password: dv9899     # password
-    driver-class-name: org.postgresql.Driver      # org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/todos
+    username: postgres
+    password: dv9899
+    driver-class-name: org.postgresql.Driver
   h2:
     console:
       enabled: true
   jpa:
     hibernate:
       ddl-auto: update
-    database-platform=: org.hibernate.dialect.PostgreSQLDialect  # org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: POSTGRESQL
     show-sql: true
   sql:
