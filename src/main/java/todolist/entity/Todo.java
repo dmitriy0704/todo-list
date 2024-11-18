@@ -3,6 +3,7 @@ package todolist.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.security.Principal;
 
 @Data
 @Entity
@@ -16,4 +17,5 @@ public class Todo {
 
     private String title;
     private String description;
+    private String user_email;
 }
