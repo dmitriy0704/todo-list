@@ -1,5 +1,25 @@
 package todolist.exceptions;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
-public record Answer(int status, String message, Object obj) {}
+@Getter
+@Setter
+public class Answer {
+
+
+    private int status;
+    private String message;
+    private Object obj;
+
+    public Answer(int status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
+    public Answer(int status, String message, Object obj) {
+        this.status = status;
+        this.message = message;
+        this.obj = obj;
+    }
+}

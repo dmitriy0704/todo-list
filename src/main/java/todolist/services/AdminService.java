@@ -69,13 +69,13 @@ public class AdminService {
                     );
                     return new Answer(1, "Исполнитель обновлен успешно", todo);
                 } else {
-                    return new Answer(-1, "Этот исполнитель уже установлен ранее", null);
+                    return new Answer(-1, "Этот исполнитель уже установлен ранее");
                 }
             } else {
-                return new Answer(-1, "Такого исполнителя не существует", null);
+                return new Answer(-1, "Такого исполнителя не существует");
             }
         } else {
-            return new Answer(-1, "Такой задачи не существует", null);
+            return new Answer(-1, "Такой задачи не существует");
         }
     }
 }
