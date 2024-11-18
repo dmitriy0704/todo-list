@@ -25,15 +25,19 @@ public class UserService implements UserDetailsService {
         return usersRepository.findByUsername(username);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return usersRepository.findByEmail(email);
+    }
+
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username).orElseThrow(
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(
-                        String.format("Пользователь '%s' не найден", username)
+                        String.format("Пользователь '%s' не найден", email)
                 ));
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+                user.getEmail(),
                 user.getPassword(),
                 user.getRoles()
                         .stream()
