@@ -1,53 +1,51 @@
 package todolist.services;
 
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import todolist.entity.User;
-import todolist.repository.RoleRepository;
-import todolist.repository.UsersRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
+import todolist.entity.Todo;
+import todolist.exceptions.Answer;
+import todolist.repository.TodoRepository;
+
+import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class UserService implements UserDetailsService {
-    public final UsersRepository usersRepository;
-    public final RoleRepository roleRepository;
+public class UserService {
 
-    public Optional<User> findByUsername(String username) {
-        return usersRepository.findByUsername(username);
+    private final TodoRepository todoRepository;
+
+    public UserService(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
     }
 
-    public Optional<User> findByEmail(String email) {
-        return usersRepository.findByEmail(email);
+    public Answer updateComments(Long id, Todo path) {
+        Optional<Todo> todo = todoRepository.findById(id);
+        if (todo.isPresent()) {
+            todo.map(t -> {
+                if (!t.getExecutor().equalsIgnoreCase(path.getAuthor())) {
+                    t.setComments(path.getComments());
+                    todoRepository.save(t);
+                    return new Answer(1, "Комментарии обновлены", todo);
+                } else {
+                    return new Answer(-1, "Комментарии не были обновлены", null);
+                }
+            });
+        }
+        return new Answer(-1, "Такой задачи нет", null);
     }
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException(
-                        String.format("Пользователь '%s' не найден", email)
-                ));
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                user.getRoles()
-                        .stream()
-                        .map(role -> new SimpleGrantedAuthority(role.getName()))
-                        .collect(Collectors.toList())
-        );
-    }
-
-    public void createNewUser(User user) {
-        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
-        usersRepository.save(user);
+    public Answer updateStatus(Long id, Todo path) {
+        Optional<Todo> todo = todoRepository.findById(id);
+        if (todo.isPresent()) {
+            todo.map(t -> {
+                if (!t.getExecutor().equalsIgnoreCase(path.getAuthor())) {
+                    t.setStatus(path.getStatus());
+                    todoRepository.save(t);
+                    return new Answer(1, "Статус обновлены", todo);
+                }
+                return new Answer(-1, "Статус не обновлены", todo);
+            });
+        }
+        return new Answer(-1, "Такой задачи нет", null);
     }
 }

@@ -3,6 +3,7 @@ package todolist.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class AdminController {
     @Operation(summary = "Создание задачи")
     @PostMapping(path = "/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Todo createTodo(@RequestBody Todo todo) {
+    public Todo createTodo(@RequestBody @Valid Todo todo) {
         todo = adminService.createTodo(todo);
         return todoRepository.save(todo);
     }
@@ -74,20 +75,15 @@ public class AdminController {
 
     @Operation(summary = "Обновление Исполнителя")
     @PatchMapping(path = "/update-executor/{id}", consumes = "application/json")
-    public @ResponseBody Answer pathTodo(@PathVariable("id") Long id, @RequestBody Todo patch) {
+    public @ResponseBody Answer updateExecutor(@PathVariable("id") Long id, @RequestBody @Valid Todo patch) {
         Answer answer;
         answer = adminService.updateExecutorAnswer(id, patch);
         return answer;
     }
 
     @Operation(summary = "Удаление задачи по ID")
-    @RequestMapping(value = "/delete/{id}", consumes = "application/json", method = RequestMethod.DELETE)
-    public @ResponseBody String deleteTodo(@PathVariable("id") Long id) {
-        if (todoRepository.existsById(id)){
-            todoRepository.deleteById(id);
-            return "Задача удалена";
-        } else {
-            return "Такой задачи нет";
-        }
+    @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
+    public @ResponseBody Answer deleteTodo(@PathVariable("id") Long id) {
+        return adminService.deleteTodo(id);
     }
 }

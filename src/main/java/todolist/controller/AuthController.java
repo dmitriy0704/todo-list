@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import todolist.dtos.JwtRequest;
 import todolist.dtos.JwtResponse;
 import todolist.exceptions.AppError;
-import todolist.services.UserService;
+import todolist.services.UserDetailsService;
 import todolist.utils.JwtTokenUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/api")
 @Tag(name = "Аутентификация")
 public class AuthController {
-    private final UserService userService;
+    private final UserDetailsService userDetailsService;
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
 
@@ -41,7 +41,7 @@ public class AuthController {
             );
         }
 
-        UserDetails userDetails = userService.loadUserByUsername(authRequest.getEmail());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getEmail());
         String token = jwtTokenUtils.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }

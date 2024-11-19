@@ -78,4 +78,17 @@ public class AdminService {
             return new Answer(-1, "Такой задачи не существует");
         }
     }
+
+    public Answer deleteTodo(Long id) {
+
+        if (todoRepository.existsById(id)){
+            todoRepository.deleteById(id);
+            return new Answer(1, "Задача удалена", null);
+        } else {
+            return new Answer(-1, "Такой задачи нет",  null);
+        }
+
+
+
+    }
 }
