@@ -20,4 +20,8 @@ spring:
   sql:
     init:
       platform: postgres
-      mode: never
+      mode: embedded
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start_and_stop
