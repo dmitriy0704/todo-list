@@ -6,14 +6,11 @@ jwt:
 spring:
   application:
     name: todo-test
-  datasource:
-    url: jdbc:postgresql://localhost:5432/todos
-    username: postgres
-    password: dv9899
-    driver-class-name: org.postgresql.Driver
-  h2:
-    console:
-      enabled: true
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/todos
+#    username: postgres
+#    password: dv9899
+#    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -23,9 +20,4 @@ spring:
   sql:
     init:
       platform: postgres
-  flyway:
-    baseline-on-migrate: true
-# swagger-ui custom path
-#springdoc:
-#    swagger-ui:
-#      path: /swagger-ui/index.html
+      mode: never
