@@ -24,14 +24,15 @@ public class UserService {
             todo.map(t -> {
                 if (!t.getExecutor().equalsIgnoreCase(path.getAuthor())) {
                     t.setComments(path.getComments());
-                    todoRepository.save(t);
-                    return new Answer(1, "Комментарии обновлены", todo);
+                    return todoRepository.save(t);
                 } else {
-                    return new Answer(-1, "Комментарии не были обновлены", null);
+                    return new Answer(-1, "Пользователь является и автором", null);
                 }
             });
+            return new Answer(1, "Комментарии обновлены", todo);
+        } else {
+            return new Answer(-1, "Такой задачи нет", null);
         }
-        return new Answer(-1, "Такой задачи нет", null);
     }
 
     public Answer updateStatus(Long id, Todo path) {
@@ -40,12 +41,15 @@ public class UserService {
             todo.map(t -> {
                 if (!t.getExecutor().equalsIgnoreCase(path.getAuthor())) {
                     t.setStatus(path.getStatus());
-                    todoRepository.save(t);
-                    return new Answer(1, "Статус обновлены", todo);
+                    return todoRepository.save(t);
+                } else {
+                    return new Answer(-1, "Пользователь является и автором", todo);
                 }
-                return new Answer(-1, "Статус не обновлены", todo);
             });
+            return new Answer(1, "Статус обновлен", todo);
+        } else {
+
+            return new Answer(-1, "Такой задачи нет", null);
         }
-        return new Answer(-1, "Такой задачи нет", null);
     }
 }
