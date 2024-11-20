@@ -6,11 +6,6 @@ jwt:
 spring:
   application:
     name: todo-test
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/todos
-#    username: postgres
-#    password: dv9899
-#    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,7 +15,7 @@ spring:
   sql:
     init:
       platform: postgres
-      mode: embedded
+      mode: never
   docker:
     compose:
       enabled: true

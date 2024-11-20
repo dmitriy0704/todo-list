@@ -22,30 +22,8 @@ public class AdminService {
         this.usersRepository = usersRepository;
     }
 
-    public Todo createTodo(Todo todo) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        todo.setUser_email(username);
-        return todo;
-    }
-
-
-    public Todo updateExecutor(Long id, Todo patch) {
-        Todo todo = todoRepository.findById(id).get();
-        if (todo.getExecutor() != null) {
-            todo.setExecutor(patch.getExecutor());
-        }
-        return todoRepository.save(todo);
-    }
-
-
-    public Answer updateExecutorAnswer(Long id, Todo patch) {
-        /* Условия обновления задачи:
+    public Answer updateExecutor(Long id, Todo patch) {
+        /* Условия обновления Исполнителя:
          *  TODO:
          *  1. Найдена/не найдена задача по id
          *  2. Проверить существует ли такой исполнитель
@@ -79,16 +57,27 @@ public class AdminService {
         }
     }
 
-    public Answer deleteTodo(Long id) {
+    public Answer updatePriority(Long id, Todo patch) {
+        Optional<Todo> todo = todoRepository.findById(id);
+        if (todo.isPresent()) {
+            todo.map(t -> {
+                        t.setExecutor(patch.getPriority());
+                        return todoRepository.save(t);
+                    }
+            );
+            return new Answer(1, "Приоритет обновлен успешно", todo);
+        } else {
+            return new Answer(-1, "Такой задачи не существует");
+        }
+    }
 
-        if (todoRepository.existsById(id)){
+    public Answer deleteTodo(Long id) {
+        if (todoRepository.existsById(id)) {
             todoRepository.deleteById(id);
             return new Answer(1, "Задача удалена", null);
         } else {
-            return new Answer(-1, "Такой задачи нет",  null);
+            return new Answer(-1, "Такой задачи нет", null);
         }
-
-
 
     }
 }

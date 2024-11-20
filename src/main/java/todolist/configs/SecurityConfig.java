@@ -32,11 +32,8 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         (auth) -> auth
-                                .requestMatchers("/secured").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers("/info").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers("/v1/api/admin/todos/create").hasRole("ADMIN")
-                                .requestMatchers("/v1/api/admin/todos/getall").hasRole("ADMIN")
-                                .requestMatchers("/admin").hasRole("ADMIN")
+                                .requestMatchers("/v1/api/todos/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers("/v1/api/admin/todos/**").hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(

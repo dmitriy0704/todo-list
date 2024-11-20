@@ -11,5 +11,6 @@ public interface TodoRepository extends CrudRepository<Todo, Long> {
     List<Todo> findAll();
     Todo findByIdAndExecutor(Long id, String executor);
 
-//    Todo findByExecutorIsNotUser_email(String executor, String useremail);
+    List<Todo> findAllByExecutor(String executor);
+    List<Todo> findAllByAuthor(String author);
 }
