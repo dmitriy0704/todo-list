@@ -15,7 +15,7 @@ spring:
   sql:
     init:
       platform: postgres
-      mode: never
+      mode: always
   docker:
     compose:
       enabled: true
