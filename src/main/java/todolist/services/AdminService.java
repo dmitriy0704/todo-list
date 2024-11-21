@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import todolist.entity.Todo;
 import todolist.entity.User;
 import todolist.exceptions.Answer;
+import todolist.records.Executor;
+import todolist.records.Priority;
 import todolist.repository.TodoRepository;
 import todolist.repository.UsersRepository;
 
@@ -22,7 +24,7 @@ public class AdminService {
         this.usersRepository = usersRepository;
     }
 
-    public Answer updateExecutor(Long id, Todo patch) {
+    public Answer updateExecutor(Long id, Executor patch) {
         /* Условия обновления Исполнителя:
          *  TODO:
          *  1. Найдена/не найдена задача по id
@@ -35,13 +37,13 @@ public class AdminService {
         // если есть,
         if (todo.isPresent()) {
             // шаг #2
-            Optional<User> user = usersRepository.findByEmail(patch.getExecutor());
+            Optional<User> user = usersRepository.findByEmail(patch.executor());
             // если есть
             if (user.isPresent()) {
                 // шаг #3
-                if (todo.map(Todo::getExecutor) != Optional.ofNullable(patch.getExecutor())) {
+                if (todo.map(Todo::getExecutor) != Optional.ofNullable(patch.executor())) {
                     todo.map(t -> {
-                                t.setExecutor(patch.getExecutor());
+                                t.setExecutor(patch.executor());
                                 return todoRepository.save(t);
                             }
                     );
@@ -57,11 +59,11 @@ public class AdminService {
         }
     }
 
-    public Answer updatePriority(Long id, Todo patch) {
+    public Answer updatePriority(Long id, Priority patch) {
         Optional<Todo> todo = todoRepository.findById(id);
         if (todo.isPresent()) {
             todo.map(t -> {
-                        t.setExecutor(patch.getPriority());
+                        t.setExecutor(patch.priority());
                         return todoRepository.save(t);
                     }
             );

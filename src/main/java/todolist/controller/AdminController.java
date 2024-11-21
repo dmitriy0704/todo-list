@@ -8,12 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import todolist.entity.Todo;
 import todolist.exceptions.Answer;
 import todolist.services.AdminService;
+import todolist.records.*;
+
 
 @Slf4j
 @RestController
 @Tag(name = "Администратор")
 @RequestMapping("/v1/api/admin/todos")
 public class AdminController {
+
+
 
     private final AdminService adminService;
 
@@ -23,13 +27,13 @@ public class AdminController {
 
     @Operation(summary = "Обновление Исполнителя")
     @PatchMapping(path = "/update-executor/{id}", consumes = "application/json")
-    public @ResponseBody Answer updateExecutor(@PathVariable("id") Long id, @RequestBody @Valid Todo patch) {
+    public @ResponseBody Answer updateExecutor(@PathVariable("id") Long id, @RequestBody @Valid Executor patch) {
         return adminService.updateExecutor(id, patch);
     }
 
-    @Operation(summary = "Обновление Исполнителя")
+    @Operation(summary = "Обновление приоритета")
     @PatchMapping(path = "/update-priority/{id}", consumes = "application/json")
-    public @ResponseBody Answer updatePriority(@PathVariable("id") Long id, @RequestBody @Valid Todo patch) {
+    public @ResponseBody Answer updatePriority(@PathVariable("id") Long id, @RequestBody @Valid Priority patch) {
         return adminService.updatePriority(id, patch);
     }
 

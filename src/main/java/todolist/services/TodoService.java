@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import todolist.entity.Todo;
 import todolist.exceptions.Answer;
+import todolist.records.Comment;
+import todolist.records.Status;
 import todolist.repository.TodoRepository;
 
 import java.util.List;
@@ -32,11 +34,11 @@ public class TodoService {
     }
 
 
-    public Answer updateComment(Long id, Todo patch) {
+    public Answer updateComment(Long id, Comment patch) {
         Optional<Todo> todo = todoRepository.findById(id);
         if (todo.isPresent()) {
             todo.map(t -> {
-                        t.setComments(patch.getComments());
+                        t.setComments(patch.comment());
                         return todoRepository.save(t);
                     }
             );
@@ -46,16 +48,12 @@ public class TodoService {
         }
     }
 
-    public Answer updateStatus(Long id, Todo path) {
+    public Answer updateStatus(Long id, Status path) {
         Optional<Todo> todo = todoRepository.findById(id);
         if (todo.isPresent()) {
             todo.map(t -> {
-                if (!t.getExecutor().equalsIgnoreCase(path.getAuthor())) {
-                    t.setStatus(path.getStatus());
-                    return todoRepository.save(t);
-                } else {
-                    return new Answer(-1, "Пользователь является и автором", todo);
-                }
+                t.setStatus(path.status());
+                return todoRepository.save(t);
             });
             return new Answer(1, "Статус обновлен", todo);
         } else {
