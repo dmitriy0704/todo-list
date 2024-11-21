@@ -59,10 +59,8 @@ public class TodoController {
 
     @Operation(summary = "Просмотр всех задач")
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Todo>> getTodos(
-     @RequestHeader HttpHeaders headers) {
-        return new ResponseEntity<>(this.todoRepository.findAll(),
-                headers, HttpStatus.OK);
+    public ResponseEntity<List<Todo>> getTodos() {
+        return new ResponseEntity<>(this.todoRepository.findAll(), HttpStatus.OK);
     }
 
     @Operation(summary = "Просмотр всех задач исполнителя")
